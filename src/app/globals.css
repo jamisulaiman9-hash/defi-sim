@@ -1,0 +1,212 @@
+/* ------------------- GOOGLE FONTS ------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ------------------- TAILWIND ------------------- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------- ROOT VARIABLES ------------------- */
+:root {
+  --bg: #0f0f10;
+  --ink: #e5e7eb;
+  --muted: #9ca3af;
+  --card: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --ring: rgba(59, 130, 246, 0.5);
+  --accent: #fbbf24;
+  --safe: #34d399;
+  --risk: #f87171;
+}
+
+/* ------------------- GLOBAL RESET ------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body, #__next { height: 100%; }
+
+/* fix mobile “Desktop site” scaling quirks */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  @apply antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+
+  background-image:
+    radial-gradient(1200px 600px at -10% -10%, rgba(255, 0, 0, 0.12), transparent 60%),
+    radial-gradient(1400px 700px at 110% -10%, rgba(255, 60, 60, 0.10), transparent 60%),
+    radial-gradient(1200px 600px at 50% 130%, rgba(255, 40, 40, 0.10), transparent 60%);
+  transition: background 0.4s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* ------------------- TYPOGRAPHY ------------------- */
+h1, h2, h3, h4 {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  font-family: 'Inter', sans-serif;
+}
+h1 { color: var(--accent); }
+
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* ------------------- COMPONENTS ------------------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  transition: transform .25s ease, box-shadow .3s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+}
+
+/* ------------------- BADGES ------------------- */
+.badge-safe{
+  background: rgba(34,197,94,0.15);
+  border: 1px solid rgba(34,197,94,0.4);
+  color: var(--safe);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  display: inline-block;
+}
+.badge-risk{
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: var(--risk);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+/* ------------------- FORMS ------------------- */
+.input,.select,.range{ width:100%; }
+.input,.select{
+  height:40px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.12);
+  padding:8px 10px;
+  background:rgba(0,0,0,0.25);
+  color:var(--ink);
+  transition:all .25s ease;
+}
+.input:focus,.select:focus{ outline:none; box-shadow:0 0 0 2px var(--ring); }
+.select{ appearance:none; background-image:none; -moz-appearance:none; -webkit-appearance:none; }
+.range{ accent-color:#ea3943; }
+.help{ font-size:12px; color:var(--muted); }
+
+/* ------------------- GRID LAYOUTS ------------------- */
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+@media (max-width:1024px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
+
+/* ------------------- SIMULATOR LAYOUT ------------------- */
+.controls-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+  align-items:stretch;
+}
+.controls-grid > *{ min-width:0; }
+@media (max-width:1100px){ .controls-grid{ grid-template-columns:1fr 1fr; gap:14px; } }
+@media (max-width:900px){ .controls-grid{ grid-template-columns:1fr; gap:12px; } }
+
+/* ------------------- METRICS ------------------- */
+.metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:16px;
+}
+@media (max-width:1000px){ .metrics-grid{ grid-template-columns:1fr; } }
+
+/* ------------------- EDUCATION BAR ------------------- */
+.edu-bar{
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  padding:4px 6px;
+  max-width:100%;
+}
+
+/* ------------------- NUMBERED STEPS (bulletproof) ------------------- */
+.steps{
+  list-style:none;
+  counter-reset: step;
+  margin-top:12px;
+  padding-left:0;
+  color:var(--ink);
+}
+.steps li{
+  position:relative;
+  counter-increment: step;
+  margin:0 0 12px 0;
+  line-height:1.45;
+  padding-left:2.75rem;          /* base gutter for number */
+  word-wrap:break-word;
+}
+.steps li::before{
+  content: counter(step) ".";
+  position:absolute;
+  left:0;
+  top:.2em;                       /* keeps baseline aligned with first line */
+  width:2rem;                     /* space reserved for the number */
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+  font-size:.95em;                /* a touch smaller than body text */
+  font-weight:700;
+  color:var(--ink);
+  opacity:.9;
+}
+/* slightly bigger gutters on medium+ screens */
+@media (min-width:768px){
+  .steps li{ padding-left:3.25rem; }
+  .steps li::before{ width:2.5rem; }
+}
+/* and a bit more on large desktop / mobile desktop-mode */
+@media (min-width:1024px){
+  .steps li{ padding-left:3.5rem; }
+  .steps li::before{ width:2.75rem; top:.18em; }
+}
+
+/* ------------------- RESPONSIVE FIXES ------------------- */
+@media (max-width:420px){
+  h1{ font-size:26px !important; margin-bottom:10px !important; }
+  .card{ border-radius:14px; }
+}
+
+/* ------------------- SCROLLBAR ------------------- */
+*{ scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.2) transparent; }
+*::-webkit-scrollbar{ height:8px; width:8px; }
+*::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.2); border-radius:9999px; }
+
+/* ------------------- ANIMATIONS ------------------- */
+.fade-in{ animation:fadeIn .6s ease-in-out both; }
+@keyframes fadeIn{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+
+@keyframes fade-in-up{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
+.animate-fade-in-up{ animation:fade-in-up .6s ease-out both; }
+
+/* Buttons & pills */
+.btn-pop{ transition:transform .15s ease, box-shadow .2s ease; will-change:transform; }
+.btn-pop:hover{ transform:translateY(-1px); }
+.btn-pop:active{ transform:translateY(0); }
+.anim-pill{ transition:transform .15s ease, background .2s ease, box-shadow .2s ease; }
+.anim-pill:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.30); }
+.anim-pill:active{ transform:translateY(0); }
+
+/* Range feel */
+.range{ transition:filter .2s ease; }
+.range:active{ filter:saturate(1.12); }
