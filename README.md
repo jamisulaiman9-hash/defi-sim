@@ -1,6 +1,6 @@
 # 🧮 DeFi Collateral Simulator
 
-An interactive simulator that helps users **understand how borrowing against crypto collateral works** — using **[RedStone Oracles](https://redstone.finance)** for live, reliable price feeds.
+An interactive simulator that helps users **understand how borrowing against crypto collateral works** using **[RedStone Oracles](https://www.redstone.finance/)** for live, reliable price feeds.
 
 👉 **Live Demo:** https://defi-sim.vercel.app
 
