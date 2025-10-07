@@ -1,14 +1,34 @@
 // src/app/api/spot/route.ts
 import { NextResponse } from "next/server";
 
-
 type RsRecord = {
   symbol?: string;
-  value?: number;     
-  price?: number;     
-  timestamp?: number; 
+  value?: number;
+  price?: number;
+  timestamp?: number;
   provider?: string;
 };
+
+// App UPPERCASE symbol -> exact RedStone casing
+const SYMBOL_MAP: Record<string, string> = {
+  ETH: "ETH", BTC: "BTC", USDC: "USDC", BNB: "BNB", SOL: "SOL", AVAX: "AVAX",
+  MATIC: "MATIC", DOGE: "DOGE", ADA: "ADA", DOT: "DOT", LINK: "LINK", LTC: "LTC",
+
+  STETH:  "stETH",
+  WSTETH: "wstETH",
+  RETH:   "rETH",
+  CBETH:  "cbETH",
+  RSETH:  "rsETH",
+  WEETH:  "weETH",
+  SFRXETH:"sfrxETH",
+  SWETH:  "swETH",
+  OSETH:  "osETH",
+  ANKRETH:"ankrETH",
+  FRXETH: "frxETH",
+  WBETH:  "wBETH",
+};
+
+const ALLOWED = Object.keys(SYMBOL_MAP);
 
 const MIRRORS = [
   (sym: string) =>
@@ -29,7 +49,6 @@ async function tryFetch(url: string) {
       pragma: "no-cache",
     },
   });
-
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return (await res.json()) as RsRecord[] | RsRecord;
 }
@@ -38,7 +57,7 @@ function normalize(payload: RsRecord[] | RsRecord) {
   const item: RsRecord = Array.isArray(payload) ? payload[0] : payload;
   const price = Number(item?.value ?? item?.price);
   let ts = Number(item?.timestamp ?? Date.now());
-  if (ts < 10_000_000_000) ts *= 1000;
+  if (ts < 10_000_000_000) ts *= 1000; // s -> ms
   if (!Number.isFinite(price)) throw new Error("Bad price");
   if (!Number.isFinite(ts)) throw new Error("Bad timestamp");
   return { price, ts };
@@ -46,27 +65,30 @@ function normalize(payload: RsRecord[] | RsRecord) {
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const asset = (searchParams.get("asset") || "ETH").toUpperCase();
+  const appAsset = (searchParams.get("asset") || "ETH").toUpperCase();
 
-  const ALLOWED = ["ETH","BTC","BNB","SOL","AVAX","MATIC","XRP","ADA","DOT","UNI","LINK","LTC","TRX","DOGE","USDC"];
-  if (!ALLOWED.includes(asset)) {
+  if (!ALLOWED.includes(appAsset)) {
     return NextResponse.json({ error: "Unsupported asset" }, { status: 400 });
   }
 
+  const redstoneSymbol = SYMBOL_MAP[appAsset];
+
   let lastErr: unknown = null;
   for (const makeUrl of MIRRORS) {
-    const url = makeUrl(asset);
     try {
-      const raw = await tryFetch(url);
+      const raw = await tryFetch(makeUrl(redstoneSymbol));
       const { price, ts } = normalize(raw);
-      return new NextResponse(JSON.stringify({ price, ts }), {
-        status: 200,
-        headers: {
-          "content-type": "application/json; charset=utf-8",
-          "cache-control": "no-store, max-age=0",
-          pragma: "no-cache",
-        },
-      });
+      return NextResponse.json(
+        { price, ts },
+        {
+          status: 200,
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            "cache-control": "no-store, max-age=0",
+            pragma: "no-cache",
+          },
+        }
+      );
     } catch (err) {
       lastErr = err;
     }
