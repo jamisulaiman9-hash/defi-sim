@@ -1,23 +1,15 @@
 // src/app/api/spot/route.ts
 import { NextResponse } from "next/server";
 
-/**
- * Very small proxy to fetch the latest spot price from RedStone.
- * We try a couple of public mirrors and normalize the output to:
- * { price: number, ts: number }  // ts in milliseconds
- *
- * Usage: /api/spot?asset=ETH
- */
 
 type RsRecord = {
   symbol?: string;
-  value?: number;     // sometimes "value"
-  price?: number;     // sometimes "price"
-  timestamp?: number; // sometimes "timestamp" (ms)
+  value?: number;     
+  price?: number;     
+  timestamp?: number; 
   provider?: string;
 };
 
-// NOTE: add a cache-buster (&t=now) so no layer serves stale data.
 const MIRRORS = [
   (sym: string) =>
     `https://api.redstone.finance/prices?symbol=${encodeURIComponent(sym)}&provider=redstone&t=${Date.now()}`,
@@ -33,7 +25,6 @@ async function tryFetch(url: string) {
     next: { revalidate: 0 },
     headers: {
       accept: "application/json",
-      // extra hints for intermediaries (belt & suspenders)
       "cache-control": "no-cache, no-store, max-age=0",
       pragma: "no-cache",
     },
@@ -47,7 +38,7 @@ function normalize(payload: RsRecord[] | RsRecord) {
   const item: RsRecord = Array.isArray(payload) ? payload[0] : payload;
   const price = Number(item?.value ?? item?.price);
   let ts = Number(item?.timestamp ?? Date.now());
-  if (ts < 10_000_000_000) ts *= 1000; // seconds→ms if needed
+  if (ts < 10_000_000_000) ts *= 1000;
   if (!Number.isFinite(price)) throw new Error("Bad price");
   if (!Number.isFinite(ts)) throw new Error("Bad timestamp");
   return { price, ts };

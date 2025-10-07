@@ -154,52 +154,52 @@ h1 { color: var(--accent); }
   counter-increment: step;
   margin:0 0 12px 0;
   line-height:1.45;
-  padding-left:2.75rem;          /* base gutter for number */
+  padding-left:2.75rem;          
   word-wrap:break-word;
 }
 .steps li::before{
   content: counter(step) ".";
   position:absolute;
   left:0;
-  top:.2em;                       /* keeps baseline aligned with first line */
-  width:2rem;                     /* space reserved for the number */
+  top:.2em;                       
+  width:2rem;                     
   text-align:right;
   font-variant-numeric: tabular-nums;
-  font-size:.95em;                /* a touch smaller than body text */
+  font-size:.95em;                
   font-weight:700;
   color:var(--ink);
   opacity:.9;
 }
-/* slightly bigger gutters on medium+ screens */
+
 @media (min-width:768px){
   .steps li{ padding-left:3.25rem; }
   .steps li::before{ width:2.5rem; }
 }
-/* and a bit more on large desktop / mobile desktop-mode */
+
 @media (min-width:1024px){
   .steps li{ padding-left:3.5rem; }
   .steps li::before{ width:2.75rem; top:.18em; }
 }
 
-/* ------------------- RESPONSIVE FIXES ------------------- */
+
 @media (max-width:420px){
   h1{ font-size:26px !important; margin-bottom:10px !important; }
   .card{ border-radius:14px; }
 }
 
-/* ------------------- SCROLLBAR ------------------- */
+
 *{ scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.2) transparent; }
 *::-webkit-scrollbar{ height:8px; width:8px; }
 *::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.2); border-radius:9999px; }
 
-/* ------------------- ANIMATIONS ------------------- */
+
 .fade-in{ animation:fadeIn .6s ease-in-out both; }
 @keyframes fadeIn{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
 
 @keyframes fade-in-up{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
 .animate-fade-in-up{ animation:fade-in-up .6s ease-out both; }
 
-/* Buttons & pills */
+
 .btn-pop{ transition:transform .15s ease, box-shadow .2s ease; will-change:transform; }
 .btn-pop:hover{ transform:translateY(-1px); }
 .btn-pop:active{ transform:translateY(0); }
@@ -207,6 +207,6 @@ h1 { color: var(--accent); }
 .anim-pill:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.30); }
 .anim-pill:active{ transform:translateY(0); }
 
-/* Range feel */
+
 .range{ transition:filter .2s ease; }
 .range:active{ filter:saturate(1.12); }
