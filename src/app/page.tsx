@@ -88,6 +88,7 @@ function AssetDropdown({
     ql ? DISPLAY_LABELS[s].toLowerCase().includes(ql) : true
   );
 
+  // permanently excluded
   const excluded = ["wBETH", "ankrETH", "swETH"];
   const lstlrtFiltered = LST_LRT.filter((s) => !excluded.includes(s)).filter(
     (s) => (ql ? DISPLAY_LABELS[s].toLowerCase().includes(ql) : true)
@@ -475,8 +476,18 @@ export default function Page() {
                     onChange={(e) => setShock(Number(e.target.value))}
                     style={S.range}
                   />
-                  <div style={{ ...S.mono, marginTop: 8 }}>
-                    Shocked Price: ${asUSD(shockedPrice)}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }}>
+                    <div style={{ ...S.mono }}>Shocked Price: ${asUSD(shockedPrice)}</div>
+                    {shock !== 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setShock(0)}
+                        title="Return to live price"
+                        style={S.resetBtn}
+                      >
+                        Reset to live price
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -498,6 +509,7 @@ export default function Page() {
               <div className="card grid-item" style={S.metric}>
                 <div style={S.metricLabel}>Borrow Limit</div>
                 <div style={S.metricValue}>${asUSD(borrowLimit)}</div>
+                <div style={S.help}>LTV cap: {Math.round(ASSET_PARAMS[asset].ltv * 100)}%</div>
               </div>
               <div className="card grid-item" style={S.metric}>
                 <div style={S.metricLabel}>Liquidation Threshold Value</div>
@@ -582,7 +594,6 @@ const S: Record<string, React.CSSProperties> = {
     maxWidth: 900,
   },
 
-  // Intro card tuned to match “1”
   intro: {
     margin: "10px auto 0",
     padding: 22,
@@ -673,6 +684,17 @@ const S: Record<string, React.CSSProperties> = {
     padding: "8px 12px",
     borderRadius: 10,
     fontWeight: 700,
+    cursor: "pointer",
+  },
+
+  resetBtn: {
+    background: "transparent",
+    border: `1px dashed ${RED_DARK}`,
+    color: RED,
+    padding: "6px 10px",
+    borderRadius: 10,
+    fontWeight: 700,
+    fontSize: 12.5,
     cursor: "pointer",
   },
 
