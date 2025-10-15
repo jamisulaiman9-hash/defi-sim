@@ -84,12 +84,13 @@ export default function EducationModal({
       body: (
         <>
           <p>
-            RedStone provides reliable on-chain prices used by lending protocols. Accurate oracles are
-            critical for borrow limits and liquidations to work safely.
+            RedStone atom delivers precise, reliable on-chain price data for lending protocols and defi platforms.
+            Accurate oracle feeds are essential to maintain fair borrow limits, healthy collateral ratios, and safe liquidations accross market.
           </p>
           <ul>
-            <li>Timely price updates help keep HF calculations fair.</li>
-            <li>Designed to be efficient and secure for DeFi usage.</li>
+            <li>Timely price updates ensures Health factor (HF) and risk calculations remains transparent and fair.</li>
+            <li>Modular and efficient architecture built for secure, low-latency Defi operations</li>
+            <li>Optimised for scalability, supporting multichain environment and real-time liquidation accuracy.</li>
           </ul>
         </>
       ),
