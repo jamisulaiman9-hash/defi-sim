@@ -80,17 +80,19 @@ export default function EducationModal({
       ),
     },
     "redstone-atom": {
-      title: "RedStone ATOM (Oracles)",
+      title: "RedStone ATOM",
       body: (
         <>
           <p>
-            RedStone atom delivers precise, reliable on-chain price data for lending protocols and defi platforms.
-            Accurate oracle feeds are essential to maintain fair borrow limits, healthy collateral ratios, and safe liquidations accross market.
+           RedStone Atom delivers instant, precise, and reliable on-chain price data for DeFi and lending protocols.
+           It introduces liquidation intelligence, enabling atomic liquidations and zero-latency price updates
+           to maintain fair borrowing limits and healthy collateral ratios.
           </p>
           <ul>
-            <li>Timely price updates ensures Health factor (HF) and risk calculations remains transparent and fair.</li>
-            <li>Modular and efficient architecture built for secure, low-latency Defi operations</li>
-            <li>Optimised for scalability, supporting multichain environment and real-time liquidation accuracy.</li>
+            <li>Instant price updates keep Health Factor (HF) and risk metrics accurate in real time.</li>
+            <li>Atomic liquidation system executes price updates and liquidations in one transaction.</li>
+            <li>Captures OEV, returning value from liquidations back to the protocol.</li>
+            <li>Seamless integration with existing RedStone feeds across multiple chains.</li>
           </ul>
         </>
       ),
